@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation</title>
+    <link rel ="stylesheet" types="text/css" href="technical.css">
+</head>
+<body>
+    <nav id ="navbar">
+        <header><strong>INTRODUCTION</strong></header>
+        <br>
+        <ul>
+        <li> <a class="nav-link" href ="#Strings"> STRINGS</a></li>
+        <li> <a class="nav-link" href ="#Lists"> LISTS</a></li>
+        <li> <a class="nav-link" href ="#Sorting">SORTING</a></li>
+        <li> <a class="nav-link" href ="#Dictionaries">DICTIONARIES</a></li>
+        
+        </ul>
+    </nav>
+    <main id ="main-doc">
+        <section class="main-section" id ="Introduction">
+        <header>INTRODUCTION</header>
+        <article>
+            <p>Python is a dynamic, interpreted (bytecode-compiled) language. There are no type declarations of variables, parameters, functions, or methods in source code. This makes the code short and flexible, and you lose the compile-time type checking of the source code.
+                Python tracks the types of all values at runtime and flags code that does not make sense as it runs.
+            </p>
+            <p>
+                An excellent way to see how Python code works is to run the Python interpreter and type code right into it. If you ever have a question like, "What happens if I add an int to a list?" Just typing it into the Python interpreter is a fast and likely the best way to see what happens. (See below to see what really happens!)
+            </p>
+            <code>
+                $ python        ## Run the Python interpreter
+Python 2.7.9 (default, Dec 30 2014, 03:41:42) 
+[GCC 4.1.2 20080704 (Red Hat 4.1.2-55)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> a = 6       ## set a variable in this interpreter session
+>>> a           ## entering an expression prints its value
+6
+>>> a + 2
+8
+>>> a = 'hi'    ## 'a' can hold a string just as well
+>>> a
+'hi'
+>>> len(a)      ## call the len() function on a string
+2
+>>> a + len(a)  ## try something that doesn't work
+Traceback (most recent call last):
+  File "", line 1, in 
+TypeError: cannot concatenate 'str' and 'int' objects
+>>> a + str(len(a))  ## probably what you really wanted
+'hi2'
+>>> foo         ## try something else that doesn't work
+Traceback (most recent call last):
+  File "", line 1, in 
+NameError: name 'foo' is not defined
+>>> ^D          ## type CTRL-d to exit (CTRL-z in Windows/DOS terminal)
+            </code>
+        <p>
+            Python source files use the ".py" extension and are called "modules." With a Python module hello.py, the easiest way to run it is with the shell command "python hello.py Alice" which calls the Python interpreter to execute the code in hello.py, passing it the command line argument "Alice". See the official docs page on all the different options you have when running Python from the command-line.
+            <br>
+            Here's a very simple hello.py program (notice that blocks of code are delimited strictly using indentation rather than curly braces — more on this later!):
+        </p>
+        <code>
+            #!/usr/bin/env python
+
+# import modules used here -- sys is a very standard one
+import sys
+
+# Gather our code in a main() function
+def main():
+    print 'Hello there', sys.argv[1]
+    # Command line args are in sys.argv[1], sys.argv[2] ...
+    # sys.argv[0] is the script name itself and can be ignored
+
+# Standard boilerplate to call the main() function to begin
+# the program.
+if __name__ == '__main__':
+    main()
+Running this program from the command line looks like:
+
+
+$ python hello.py Guido
+Hello there Guido
+$ ./hello.py Alice  ## without needing 'python' first (Unix)
+Hello there Alice
+Imports, Command-line arguments, and len()
+        </code>
+        </article>
+        </section>
+
+        <section class="main-section" id="Strings">
+            <header>String</header>
+            <article>
+                <p>
+                    Python has a built-in string class named "str" with many handy features (there is an older module named "string" which you should not use). String literals can be enclosed by either double or single quotes, although single quotes are more commonly used. Backslash escapes work the usual way within both single and double quoted literals -- e.g. \n \' \". A double quoted string literal can contain single quotes without any fuss (e.g. "I didn't do it") and likewise single quoted string can contain double quotes. A string literal can span multiple lines, but there must be a backslash \ at the end of each line to escape the newline. String literals inside triple quotes, """ or ''', can span multiple lines of text.
+                </p>
+                <br>
+                <p>
+                    Python strings are "immutable" which means they cannot be changed after they are created (Java strings also use this immutable style). Since strings can't be changed, we construct *new* strings as we go to represent computed values. So for example the expression ('hello' + 'there') takes in the 2 strings 'hello' and 'there' and builds a new string 'hellothere'.
+                </p>
+                <br>
+                <p>
+                    Characters in a string can be accessed using the standard [ ] syntax, and like Java and C++, Python uses zero-based indexing, so if s is 'hello' s[1] is 'e'. If the index is out of bounds for the string, Python raises an error. The Python style (unlike Perl) is to halt if it can't tell what to do, rather than just make up a default value. The handy "slice" syntax (below) also works to extract any substring from a string. The len(string) function returns the length of a string. The [ ] syntax and the len() function actually work on any sequence type -- strings, lists, etc.. Python tries to make its operations work consistently across different types. Python newbie gotcha: don't use "len" as a variable name to avoid blocking out the len() function. The '+' operator can concatenate two strings. Notice in the code below that variables are not pre-declared -- just assign to them and go.
+                </p>
+                <code>
+                    s = 'hi'
+  print s[1]          ## i
+  print len(s)        ## 2
+  print s + ' there'  ## hi there
+                </code>
+
+                <p>Unlike Java, the '+' does not automatically convert numbers or other types to string form. The str() function converts values to a string form so they can be combined with other strings.
+                </p>
+<code>
+  pi = 3.14
+  ##text = 'The value of pi is ' + pi      ## NO, does not work
+  text = 'The value of pi is '  + str(pi)  ## yes
+                </code>
+            </article>
+        </section>
+
+
+        <section class="main-section" id="Lists">
+            <header>List</header>
+            <article>
+                <p>
+                    Python has a great built-in list type named "list". List literals are written within square brackets [ ]. Lists work similarly to strings -- use the len() function and square brackets [ ] to access data, with the first element at index 0. (See the official python.org list docs.)
+                </p>
+                <code>
+                    colors = ['red', 'blue', 'green']
+                    print colors[0]    ## red
+                    print colors[2]    ## green
+                    print len(colors)  ## 3
+                </code>
+                <p>
+                    Assignment with an = on lists does not make a copy. Instead, assignment makes the two variables point to the one list in memory.
+                </p>
+                <code>
+                    b = colors   ## Does not copy the list
+                </code>
+                <p>
+                    The "empty list" is just an empty pair of brackets [ ]. The '+' works to append two lists, so [1, 2] + [3, 4] yields [1, 2, 3, 4] (this is just like + with strings).
+                </p>
+                </article>
+        </section>
+        <section class="main-section" id="Sorting">
+            <header>Sorting</header>
+            <article>
+                <p>
+                    The easiest way to sort is with the sorted(list) function, which takes a list and returns a new list with those elements in sorted order. The original list is not changed.
+        
+                </p>
+                <code>
+                    a = [5, 1, 4, 3]
+                    print sorted(a)  ## [1, 3, 4, 5]
+                    print a  ## [5, 1, 4, 3]
+                </code>
+                <p>
+                    t's most common to pass a list into the sorted() function, but in fact it can take as input any sort of iterable collection. The older list.sort() method is an alternative detailed below. The sorted() function seems easier to use compared to sort(), so I recommend using sorted().
+The sorted() function can be customized through optional arguments. The sorted() optional argument reverse=True, e.g. sorted(list, reverse=True), makes it sort backwards.
+                </p>
+                <code>
+                    strs = ['aa', 'BB', 'zz', 'CC']
+                    print sorted(strs)  ## ['BB', 'CC', 'aa', 'zz'] (case sensitive)
+                    print sorted(strs, reverse=True)   ## ['zz', 'aa', 'CC', 'BB']   
+                </code>
+                  <header>sort() method</header>
+                <p>As an alternative to sorted(), the sort() method on a list sorts that list into ascending order, e.g. list.sort(). The sort() method changes the underlying list and returns None, so use it like this:
+                </p>
+                <code>
+                alist.sort()            ## correct
+                alist = blist.sort()    ## NO incorrect, sort() returns None</code>
+                <p>The above is a very common misunderstanding with sort() -- it *does not return* the sorted list. The sort() method must be called on a list; it does not work on any enumerable collection (but the sorted() function above works on anything). The sort() method predates the sorted() function, so you will likely see it in older code. The sort() method does not need to create a new list, so it can be a little faster in the case that the elements to sort are already in a list.
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="Dictionaries">
+            <header>Dictionary</header>
+            <article>
+                <p>
+                    Python's efficient key/value hash table structure is called a "dict". The contents of a dict can be written as a series of key:value pairs within braces { }, e.g. dict = {key1:value1, key2:value2, ... }. The "empty dict" is just an empty pair of curly braces {}.
+                </p>
+                <p>Looking up or setting a value in a dict uses square brackets, e.g. dict['foo'] looks up the value under the key 'foo'. Strings, numbers, and tuples work as keys, and any type can be a value. Other types may or may not work correctly as keys (strings and tuples work cleanly since they are immutable). Looking up a value which is not in the dict throws a KeyError -- use "in" to check if the key is in the dict, or use dict.get(key) which returns the value or None if the key is not present (or get(key, not-found) allows you to specify what value to return in the not-found case).
+                </p>
+                <code>
+                    ## Can build up a dict by starting with the the empty dict {}
+                    ## and storing key/value pairs into the dict like this:
+                    ## dict[key] = value-for-that-key
+                    dict = {}
+                    dict['a'] = 'alpha'
+                    dict['g'] = 'gamma'
+                    dict['o'] = 'omega'
+
+                    print dict  ## {'a': 'alpha', 'o': 'omega', 'g': 'gamma'}
+
+                    print dict['a']     ## Simple lookup, returns 'alpha'
+                    dict['a'] = 6       ## Put new key/value into dict
+                    'a' in dict         ## True
+                    ## print dict['z']                  ## Throws KeyError
+                     if 'z' in dict: print dict['z']     ## Avoid KeyError
+                    print dict.get('z')  ## None (instead of KeyError)
+                </code>
+            </article>
+        </section>
+    </main>
+   
+</body>
+</html>
